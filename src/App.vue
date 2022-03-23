@@ -71,10 +71,6 @@
   color: var(--bs-body-color);
 }
 
-#starsharklist {
-  border-top: #000 2px solid;
-}
-
 .spanaddr {
   text-overflow: ellipsis;
   white-space: nowrap;

@@ -74,7 +74,7 @@
         </div>
       </div>
     </div>
-    <div class="row">
+    <div id="starsharklist" class="row">
       <AccountBox
         v-for="account in savedAccounts"
         :key="account.owner"
@@ -113,6 +113,7 @@ export default {
   mounted() {
     starShark = new StarShark(this.setLoadAlert);
     store.commit("initSA");
+    this.loadStarShark()
   },
   methods: {
     loadStarShark() {
@@ -177,4 +178,7 @@ export default {
 </script>
 
 <style scoped>
+#starsharklist {
+  border-top: #000 2px solid;
+}
 </style>
