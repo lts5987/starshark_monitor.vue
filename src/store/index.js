@@ -6,7 +6,7 @@ function updateSA(data) {
 
 export default createStore({
   state: {
-    savedAddress: []
+    savedAddress: [],
   },
   getters: {
   },
@@ -21,6 +21,10 @@ export default createStore({
     },
     addSA(state, data) {
       state.savedAddress.push(data)
+      updateSA(state.savedAddress)
+    },
+    updateSA(state, arr) {
+      state.savedAddress[arr.index] = arr.data
       updateSA(state.savedAddress)
     },
     removeSA(state, address) {

@@ -4,9 +4,12 @@ import { sleep } from "@/assets/js/function";
 import axios from "axios";
 
 export default class StarShark {
-  constructor(setLoadAlert) {
+  constructor() {
+    this.setLoadAlert = () => {
+      console.log('Not define yet')
+    }
+    this.ssacclink = 'https://starsharks.com/go/auth-api/account/base'
     this.sharkLink = 'https://starsharks.com/go/api/market/shark-detail?shark_id='
-    this.setLoadAlert = setLoadAlert
     this.web3 = new Web3("https://bsc-dataseed.binance.org/")
     this.contract = new this.web3.eth.Contract(
       StarSharkBSC.abi, StarSharkBSC.address,
@@ -14,6 +17,10 @@ export default class StarShark {
         if (err) throw [new Date().toString(), 'contract starShark', err];
       }
     )
+  }
+
+  initSetLoadAlert(setLoadAlert) {
+    this.setLoadAlert = setLoadAlert
   }
 
   //获取账号鲨鱼
@@ -69,5 +76,14 @@ export default class StarShark {
       }
     }
     return allAcc
+  }
+
+  //获取JWT API数据
+  async getBaseAccData(authorization) {
+    return await axios.get(this.ssacclink, {
+      headers: {
+        authorization: authorization,
+      },
+    });
   }
 }
