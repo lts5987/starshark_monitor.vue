@@ -1,6 +1,6 @@
 <template>
-  <div class="col-xl-3 col-lg-4 col-md-6">
-    <div class="card mt-3">
+  <div class="col">
+    <div class="card">
       <div class="card-header">
         <div>
           {{ accData.name }}

@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-black" ref="navbar">
     <div class="container-fluid">
       <router-link :to="{ name: 'accounts' }" class="navbar-brand"
         >Monitor StarShark</router-link
@@ -37,10 +37,21 @@
       </div>
     </div>
   </nav>
-  <router-view />
+  <div class="container-fluid pt-3 pb-3">
+    <router-view />
+  </div>
+  <footer class="text-white bg-black">
+    <div class="container-fluid d-flex pt-3 pb-3 justify-content-between">
+      <div>Monitor StarShark @ 2022</div>
+      <div>v0.0.2</div>
+    </div>
+  </footer>
 </template>
 <script>
 export default {
+  data() {
+    return {};
+  },
   mounted() {
     this.$store.commit("initSA");
     document.body.classList.add("bg-dark");
@@ -138,5 +149,14 @@ export default {
   height: 0;
   padding: 0;
   margin-top: 0 !important;
+}
+[class*="col"] > .card {
+  height: 100%;
+}
+.card.hide-body {
+  height: auto;
+}
+.card.hide-body .card-body {
+  display: none;
 }
 </style>

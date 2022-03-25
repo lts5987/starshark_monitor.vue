@@ -1,41 +1,44 @@
 <template>
-  <div class="container-fluid">
-    <div class="row pb-3">
-      <div class="col-lg-6">
-        <div class="card mt-3">
-          <div class="card-header">Monitor StarShark</div>
-          <div class="card-body">
-            <div class="d-grid gap-2">
-              <button
-                type="button"
-                class="btn btn-primary"
-                @click="loadStarShark()"
-              >
-                Refresh StarShark
-              </button>
-            </div>
-            <div
-              class="alert mb-0 mt-3"
-              role="alert"
-              :class="{
-                hide: loadAlert == -1,
-                'alert-warning': loadAlert == 0,
-                'alert-success': loadAlert == 1,
-              }"
+  <div class="row row-cols-1 g-3">
+    <div class="col">
+      <div class="card" :class="{ 'hide-body': !showcardbody[0] }">
+        <div class="card-header" @click="showcardbody[0] = !showcardbody[0]">
+          Options
+        </div>
+        <div class="card-body">
+          <div class="d-grid gap-2">
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="loadStarShark()"
             >
-              {{ loadAlertText }}
-            </div>
+              Refresh StarShark
+            </button>
+          </div>
+          <div
+            class="alert mb-0 mt-3"
+            role="alert"
+            :class="{
+              hide: loadAlert == -1,
+              'alert-warning': loadAlert == 0,
+              'alert-success': loadAlert == 1,
+            }"
+          >
+            {{ loadAlertText }}
           </div>
         </div>
       </div>
     </div>
-    <div id="starsharklist" class="row">
-      <AccountBox
-        v-for="account in savedAccounts"
-        :key="account.owner"
-        :data="account"
-      ></AccountBox>
-    </div>
+  </div>
+  <div
+    id="starsharklist"
+    class="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-3 pt-3"
+  >
+    <AccountBox
+      v-for="account in savedAccounts"
+      :key="account.owner"
+      :data="account"
+    ></AccountBox>
   </div>
 </template>
 
@@ -53,6 +56,7 @@ export default {
       loadAlertText: "",
       loadTimeout: null,
       savedAccounts: [],
+      showcardbody: [true],
     };
   },
   mounted() {
@@ -65,12 +69,12 @@ export default {
   },
   methods: {
     loadStarShark() {
-      this.StarShark.getMultiAccSharks(
-        this.$store.state.savedAddress
-      ).then((accounts) => {
-        this.savedAccounts = accounts;
-        this.setLoadAlert("Loaded StarShark");
-      });
+      this.StarShark.getMultiAccSharks(this.$store.state.savedAddress).then(
+        (accounts) => {
+          this.savedAccounts = accounts;
+          this.setLoadAlert("Loaded StarShark");
+        }
+      );
     },
     setLoadAlert(text, type = 1) {
       console.log(this.loadTimeout);

@@ -1,96 +1,151 @@
 <template>
-  <div class="container-fluid">
-    <div class="row pb-3">
-      <div class="col-lg-6">
-        <div class="card mb-3">
-          <div class="card-header">
-            Tutorial to get the file to import accounts
-          </div>
-          <div class="card-body">
-            <ul style="list-style-type: decimal">
-              <li>
-                Drag the button at below to bookmark bar.<br />
-                <a :href="link" class="btn btn-secondary"
-                  >Fetch Account From StarShark</a
-                >
-              </li>
-              <li>
-                Use the bookmark added at 1st step on starshark official home
-                page.
-              </li>
-            </ul>
-            <span class="text-danger"
-              >* The bookmark will only get the accounts that connected
-              before.</span
-            >
-          </div>
+  <div class="row row-cols-1 row-cols-md-2 g-3">
+    <div class="col">
+      <div class="card" :class="{ 'hide-body': !showcardbody[0] }">
+        <div class="card-header" @click="showcardbody[0] = !showcardbody[0]">
+          Tutorial to get the file to import accounts
         </div>
-      </div>
-      <div class="col-lg-6">
-        <div class="card mb-3">
-          <div class="card-header">
-            Method 1 (add address)<br />
-            <span class="text-danger"
-              >* cant get game sea amount with this method</span
-            >
-          </div>
-          <div class="card-body">
-            <div class="mb-3">
-              <label for="address" class="form-label">Account Address</label>
-              <input
-                type="text"
-                class="form-control"
-                :value="address"
-                @input="(event) => (address = event.target.value)"
-              />
-            </div>
-            <div class="mb-3">
-              <label for="name" class="form-label">Account Name</label>
-              <input
-                type="text"
-                class="form-control"
-                :value="name"
-                @input="(event) => (name = event.target.value)"
-              />
-            </div>
-            <div class="d-grid gap-2\">
-              <button
-                type="button"
-                class="btn btn-primary"
-                @click="addAddress()"
+        <div class="card-body">
+          <ul style="list-style-type: decimal">
+            <li>
+              Drag the button at below to bookmark bar.<br />
+              <a :href="link" class="btn btn-secondary"
+                >Fetch Account From StarShark</a
               >
-                Add Address
-              </button>
-            </div>
-            <div
-              class="alert mb-0 mt-3"
-              role="alert"
-              :class="{
-                hide: addAlert == -1,
-                'alert-warning': addAlert == 0,
-                'alert-success': addAlert == 1,
-              }"
-            >
-              {{ addAlertText }}
-            </div>
+            </li>
+            <li>
+              Use the bookmark added at 1st step on starshark official home
+              page.
+            </li>
+          </ul>
+          <span class="text-danger"
+            >* The bookmark will only get the accounts that connected
+            before.</span
+          >
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card" :class="{ 'hide-body': !showcardbody[1] }">
+        <div class="card-header" @click="showcardbody[1] = !showcardbody[1]">
+          Method 1 - Add Address (no token)<br />
+          <span class="text-danger"
+            >* cant get game sea amount with this method</span
+          >
+        </div>
+        <div class="card-body">
+          <div class="mb-3">
+            <label for="address" class="form-label">Account Address</label>
+            <input
+              type="text"
+              class="form-control"
+              :value="address"
+              @input="(event) => (address = event.target.value)"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="name" class="form-label">Account Name</label>
+            <input
+              type="text"
+              class="form-control"
+              :value="name"
+              @input="(event) => (name = event.target.value)"
+            />
+          </div>
+          <div class="d-grid gap-2\">
+            <button type="button" class="btn btn-primary" @click="addAddress()">
+              Add Address
+            </button>
+          </div>
+          <div
+            class="alert mb-0 mt-3"
+            role="alert"
+            :class="{
+              hide: addAlert == -1,
+              'alert-warning': addAlert == 0,
+              'alert-success': addAlert == 1,
+            }"
+          >
+            {{ addAlertText }}
           </div>
         </div>
       </div>
-      <div class="col-lg-6">
-        <div class="card mb-3">
-          <div class="card-header">Method 2 (import address)</div>
-          <div class="card-body">
-            <div @dragover="dragoverFile" @drop="dropFile"></div>
-            <label class="file">
-              <input
-                type="file"
-                id="file"
-                aria-label="File browser example"
-                @change="inputFile"
-                :value="file"
-              />
-              <span class="file-custom"></span>
-            </label>
+    </div>
+    <div class="col order-md-3">
+      <div class="card" :class="{ 'hide-body': !showcardbody[2] }">
+        <div class="card-header" @click="showcardbody[2] = !showcardbody[2]">
+          Method 2 - Import Address (has token)
+        </div>
+        <div class="card-body">
+          <div
+            id="upload-container"
+            @dragover="dragoverFile"
+            @drop="dropFile"
+            @click="$refs.iFile.click()"
+          >
+            <i class="fa-solid fa-cloud-upload"></i>
+            <p aria-hidden="true" id="choose">
+              <strong>Choose a the file that fetch from bookmark </strong>
+            </p>
+            <p aria-hidden="true">or drag and drop to import</p>
+            <input type="file" @change="inputFile" :value="file" ref="iFile" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col order-md-2">
+      <div class="card">
+        <div class="card-header">Accounts List</div>
+        <div class="card-body">
+          <div class="list-group">
+            <div
+              class="list-group-item"
+              v-for="(sa, index) in savedAddress"
+              :key="sa.address"
+            >
+              <div class="account-header d-flex justify-content-between">
+                <div class="account-name">{{ sa.name }}</div>
+                <div class="account-button d-flex">
+                  <div
+                    class="move-up"
+                    title="Move Up"
+                    v-show="index != 0"
+                    @click="moveUpAddress(sa.address)"
+                  >
+                    <i class="fa-solid fa-angles-up fa-fw"></i>
+                  </div>
+                  <div
+                    class="move-down"
+                    title="Move Down"
+                    v-show="index != savedAddress.length - 1"
+                    @click="moveDownAddress(sa.address)"
+                  >
+                    <i class="fa-solid fa-angles-down fa-fw"></i>
+                  </div>
+                  <div
+                    class="remove"
+                    title="Remove"
+                    @click="removeAddress(sa.address)"
+                  >
+                    <i class="fa-solid fa-xmark fa-fw"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="account-body">
+                <div class="account-address">
+                  <span class="spanaddr">{{ sa.address }}</span>
+                </div>
+                <div
+                  class="account-jwt-info"
+                  v-if="sa.authorization == undefined"
+                >
+                  No token setup.
+                </div>
+                <div class="account-jwt-info" v-else>
+                  Token {{ checkSAExpired(sa) }}.
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -99,6 +154,7 @@
 </template>
 
 <script>
+import moment from "moment";
 export default {
   name: "AccountsView",
   data() {
@@ -110,11 +166,15 @@ export default {
       addTimeout: null,
       file: "",
       link: 'javascript:(t=>{var e=document.createElement("a");e.setAttribute("href","data:text/json;charset=utf-8,"+encodeURIComponent(t)),e.setAttribute("download","starshark_monitor_import_data"),e.style.display="none",document.body.appendChild(e),e.click(),document.body.removeChild(e)})(localStorage.SESSIONS);',
+      showcardbody: [true, true, true],
     };
   },
-  mounted() {
-    console.log(this.$store.state.savedAddress);
+  computed: {
+    savedAddress() {
+      return this.$store.getters.savedAddressDecode;
+    },
   },
+  mounted() {},
   methods: {
     addAddress() {
       let SA = this.$store.state.savedAddress;
@@ -139,13 +199,12 @@ export default {
     },
     removeAddress(address) {
       this.$store.commit("removeSA", address);
-      let newSavedAccounts = [];
-      for (const key in this.savedAccounts) {
-        if (this.savedAccounts[key].accData.address !== address) {
-          newSavedAccounts.push(this.savedAccounts[key]);
-        }
-      }
-      this.savedAccounts = newSavedAccounts;
+    },
+    moveUpAddress(address) {
+      this.$store.commit("moveUpSA", address);
+    },
+    moveDownAddress(address) {
+      this.$store.commit("moveDownSA", address);
     },
     setAddAlert(text, type = 1) {
       clearTimeout(this.addTimeout);
@@ -166,32 +225,27 @@ export default {
           let index = this.$store.state.savedAddress
             .map((d) => d.address.toLowerCase())
             .indexOf(key.toLowerCase());
-          if (
-            index == -1 ||
-            this.$store.state.savedAddress[index].authorization == undefined
-          ) {
-            let accData = await this.StarShark.getBaseAccData(
-              data[key].authorization
-            );
-            accData = accData.data.data;
-            if (index == -1) {
-              this.$store.commit("addSA", {
+          let accData = await this.StarShark.getBaseAccData(
+            data[key].authorization
+          );
+          accData = accData.data.data;
+          if (index == -1) {
+            this.$store.commit("addSA", {
+              address: accData.account,
+              name: accData.name,
+              authorization: data[key].authorization,
+              qr_code: data[key].qr_code,
+            });
+          } else {
+            this.$store.commit("updateSA", {
+              index: index,
+              data: {
                 address: accData.account,
                 name: accData.name,
                 authorization: data[key].authorization,
                 qr_code: data[key].qr_code,
-              });
-            } else {
-              this.$store.commit("updateSA", {
-                index: index,
-                data: {
-                  address: accData.account,
-                  name: accData.name,
-                  authorization: data[key].authorization,
-                  qr_code: data[key].qr_code,
-                },
-              });
-            }
+              },
+            });
           }
         }
       });
@@ -218,65 +272,53 @@ export default {
       event.preventDefault();
       this.loadImportFile(event.dataTransfer.files[0]);
     },
+    checkSAExpired(sa) {
+      let exp = sa.exp * 1000;
+      if (Date.now() >= exp) return "expired";
+      else return "will expire " + moment(exp).fromNow();
+    },
   },
 };
 </script>
 
 <style>
-.file {
-  position: relative;
-  display: inline-block;
+p {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+.fa-cloud-upload {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+  color: #0066b9;
+}
+#upload-container {
+  border: 2px solid #0066b9;
+  border-radius: 18px;
+  width: calc(100% - 40px);
+  height: 330px;
+  margin: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
   cursor: pointer;
-  height: 2.5rem;
-  width: 100%;
 }
-.file input {
-  min-width: 14rem;
-  margin: 0;
-  filter: alpha(opacity=0);
+#upload-container:focus-within #choose {
+  color: #fff;
+  background-color: #012a4c;
+}
+#upload-container:focus-within {
+  background-color: #eff6fb33;
+}
+#upload-container:hover {
+  background-color: #eff6fb33;
+}
+#choose {
+  color: #0066b9;
+  padding: 0.22em;
+  font-size: 1.125rem;
+}
+input[type="file"] {
   opacity: 0;
-}
-.file-custom {
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  z-index: 5;
-  height: 2.5rem;
-  padding: 0.5rem 1rem;
-  line-height: 1.5;
-  color: #555;
-  background-color: #fff;
-  border: 0.075rem solid #ddd;
-  border-radius: 0.25rem;
-  box-shadow: inset 0 0.2rem 0.4rem rgba(0, 0, 0, 0.05);
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-.file-custom:after {
-  content: "Choose file...";
-}
-.file-custom:before {
-  position: absolute;
-  top: -0.075rem;
-  right: -0.075rem;
-  bottom: -0.075rem;
-  z-index: 6;
-  display: block;
-  content: "Browse";
-  height: 2.5rem;
-  padding: 0.5rem 1rem;
-  line-height: 1.5;
-  color: #555;
-  background-color: #eee;
-  border: 0.075rem solid #ddd;
-  border-radius: 0 0.25rem 0.25rem 0;
-}
-
-/* Focus */
-.file input:focus ~ .file-custom {
-  box-shadow: 0 0 0 0.075rem #fff, 0 0 0 0.2rem #0074d9;
 }
 </style>
