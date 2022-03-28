@@ -115,7 +115,7 @@ export default {
     this.timer = parseInt(localStorage.getItem("autoRefreshTimer")) || 10;
     this.currentTimer = this.timer * 60;
     this.timerEnable = localStorage.getItem("autoRefreshEnable");
-    if (this.timerEnable === null) this.timerEnable = true;
+    if (this.timerEnable === null) this.timerEnable = false;
     else this.timerEnable = this.timerEnable === "true";
     this.StarShark.initSetLoadAlert(this.setLoadAlert);
     this.loadStarShark();
@@ -146,7 +146,7 @@ export default {
       this.StarShark.getMultiAccSharks(this.$store.state.savedAddress).then(
         (accounts) => {
           this.savedAccounts = accounts;
-          this.setLoadAlert("Loaded StarShark");
+          if (this.savedAccounts > 0) this.setLoadAlert("Loaded StarShark");
           this.currentTimer = this.timer * 60;
         }
       );

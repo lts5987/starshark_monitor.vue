@@ -126,90 +126,94 @@
         >
           Accounts List
         </div>
-        <div class="card-body" v-show="showcardbody[3]">
-          <div class="list-group">
-            <div
-              class="list-group-item"
-              v-for="(sa, index) in savedAddress"
-              :key="sa.address"
-            >
-              <div class="account-header d-flex justify-content-between">
-                <div class="account-name" v-show="editName[index]">
-                  {{ sa.name }}
-                  <i
-                    class="fa-solid fa-pen-to-square fa-fw"
-                    @click="(editName[index] = false), focusEditName(index)"
-                  ></i>
-                </div>
-                <div class="account-name-edit" v-show="!editName[index]">
-                  <input
-                    type="text"
-                    :value="editNameText[index]"
-                    @blur="
-                      (event) => {
-                        (editName[index] = true),
-                          updateName(index, event.target.value);
-                      }
-                    "
-                    @keyup.enter="
-                      (event) => {
-                        (editName[index] = true),
-                          (editNameText[index] = event.target.value);
-                      }
-                    "
-                    ref="editName"
-                  />
-                </div>
-                <div class="account-button d-flex">
-                  <div
-                    class="move-up"
-                    title="Move Up"
-                    v-show="index != 0"
-                    @click="moveUpAddress(sa.address)"
-                  >
-                    <i class="fa-solid fa-angles-up fa-fw"></i>
-                  </div>
-                  <div
-                    class="move-down"
-                    title="Move Down"
-                    v-show="index != savedAddress.length - 1"
-                    @click="moveDownAddress(sa.address)"
-                  >
-                    <i class="fa-solid fa-angles-down fa-fw"></i>
-                  </div>
-                  <div
-                    class="remove"
-                    title="Remove"
-                    @click="removeAddress(sa.address, sa.name)"
-                  >
-                    <i class="fa-solid fa-xmark fa-fw"></i>
-                  </div>
-                </div>
+        <ul class="list-group list-group-flush" v-show="showcardbody[3]">
+          <li
+            class="list-group-item text-center"
+            v-if="savedAddress.length == 0"
+          >
+            No account.
+          </li>
+          <li
+            class="list-group-item"
+            v-for="(sa, index) in savedAddress"
+            :key="sa.address"
+          >
+            <div class="account-header d-flex justify-content-between">
+              <div class="account-name" v-show="editName[index]">
+                {{ sa.name }}
+                <i
+                  class="fa-solid fa-pen-to-square fa-fw"
+                  @click="(editName[index] = false), focusEditName(index)"
+                ></i>
               </div>
-              <div class="account-body">
-                <div class="account-address">
-                  <span class="spanaddr"
-                    ><a
-                      :href="`https://bscscan.com/address/${sa.address}`"
-                      target="_blank"
-                      >{{ sa.address }}</a
-                    ></span
-                  >
+              <div class="account-name-edit" v-show="!editName[index]">
+                <input
+                  type="text"
+                  :value="editNameText[index]"
+                  @blur="
+                    (event) => {
+                      (editName[index] = true),
+                        updateName(index, event.target.value);
+                    }
+                  "
+                  @keyup.enter="
+                    (event) => {
+                      (editName[index] = true),
+                        (editNameText[index] = event.target.value);
+                    }
+                  "
+                  ref="editName"
+                />
+              </div>
+              <div class="account-button d-flex">
+                <div
+                  class="move-up"
+                  title="Move Up"
+                  v-show="index != 0"
+                  @click="moveUpAddress(sa.address)"
+                >
+                  <i class="fa-solid fa-angles-up fa-fw"></i>
                 </div>
-                <div class="account-jwt-info d-flex justify-content-between">
-                  <div>{{ checkSAToken(sa) }}</div>
-                  <div
-                    v-if="sa.authorization !== undefined"
-                    class="text-decoration-underline"
-                    @click="removeToken(index, sa)"
-                  >
-                    Remove Token
-                  </div>
+                <div
+                  class="move-down"
+                  title="Move Down"
+                  v-show="index != savedAddress.length - 1"
+                  @click="moveDownAddress(sa.address)"
+                >
+                  <i class="fa-solid fa-angles-down fa-fw"></i>
+                </div>
+                <div
+                  class="remove"
+                  title="Remove"
+                  @click="removeAddress(sa.address, sa.name)"
+                >
+                  <i class="fa-solid fa-xmark fa-fw"></i>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+            <div class="account-body">
+              <div class="account-address">
+                <span class="spanaddr"
+                  ><a
+                    :href="`https://bscscan.com/address/${sa.address}`"
+                    target="_blank"
+                    >{{ sa.address }}</a
+                  ></span
+                >
+              </div>
+              <div class="account-jwt-info d-flex justify-content-between">
+                <div>{{ checkSAToken(sa) }}</div>
+                <div
+                  v-if="sa.authorization !== undefined"
+                  class="text-decoration-underline"
+                  @click="removeToken(index, sa)"
+                >
+                  Remove Token
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -275,10 +279,12 @@ export default {
       let SA = this.$store.state.savedAddress;
       if (
         this.StarShark.web3.utils.isAddress(this.address) &&
-        SA.map((d) => d.address).indexOf(this.address) === -1
+        SA.map((d) => d.address.toLowerCase()).indexOf(
+          this.address.toLowerCase()
+        ) === -1
       ) {
         this.$store.commit("addSA", {
-          address: this.address,
+          address: this.address.toLowerCase(),
           name: this.name,
         });
         this.setAddAlert("Success add account");
@@ -287,7 +293,11 @@ export default {
       } else {
         if (!this.StarShark.web3.utils.isAddress(this.address)) {
           this.setAddAlert("Account format wrong", 0);
-        } else if (SA.map((d) => d.address).indexOf(this.address) !== -1) {
+        } else if (
+          SA.map((d) => d.address.toLowerCase()).indexOf(
+            this.address.toLowerCase()
+          ) !== -1
+        ) {
           this.setAddAlert("Account exist", 0);
         }
       }
@@ -310,7 +320,7 @@ export default {
         this.$store.commit("updateSA", {
           index: index,
           data: {
-            address: sa.address,
+            address: sa.address.toLowerCase(),
             name: sa.name,
           },
         });
@@ -347,7 +357,7 @@ export default {
           accData = accData.data.data;
           if (index == -1) {
             this.$store.commit("addSA", {
-              address: accData.account,
+              address: accData.account.toLowerCase(),
               name: accData.name,
               authorization: data[key].authorization,
               qr_code: data[key].qr_code,
@@ -356,7 +366,7 @@ export default {
             this.$store.commit("updateSA", {
               index: index,
               data: {
-                address: accData.account,
+                address: accData.account.toLowerCase(),
                 name: accData.name,
                 authorization: data[key].authorization,
                 qr_code: data[key].qr_code,
