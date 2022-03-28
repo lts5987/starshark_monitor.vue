@@ -268,6 +268,7 @@ export default {
           index: index,
           data: data,
         });
+        this.editNameText[index] = name;
       }
     },
     addAddress() {
