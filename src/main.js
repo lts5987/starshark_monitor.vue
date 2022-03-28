@@ -1,20 +1,20 @@
-import "bootstrap/dist/css/bootstrap.css"
 import "@fortawesome/fontawesome-free/css/all.min.css"
-import { createApp } from 'vue'
-import App from './App.vue'
-
+import axios from 'axios'
+import "bootstrap/dist/css/bootstrap.css"
 import "bootstrap/dist/js/bootstrap.js"
+import { createApp } from 'vue'
+import VueAxios from "vue-axios"
+import App from './App.vue'
+import StarSharks from "./assets/js/starsharks"
 import router from './router'
 import store from './store'
-import axios from 'axios'
-import VueAxios from "vue-axios"
-import StarShark from "./assets/js/starshark"
+
 
 let app = createApp(App)
 app.use(store)
 app.use(router)
 app.use(VueAxios, axios)
-app.config.globalProperties.StarShark = new StarShark
+app.config.globalProperties.StarSharks = new StarSharks
 app.mount('#app')
 
 

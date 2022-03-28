@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-black" ref="navbar">
     <div class="container-fluid">
       <router-link :to="{ name: 'accounts' }" class="navbar-brand">
-        Monitor StarShark
+        StarSharks Monitor
       </router-link>
       <button
         class="navbar-toggler"
@@ -45,7 +45,7 @@
   </div>
   <footer class="text-white bg-black">
     <div class="container-fluid d-flex pt-3 pb-3 justify-content-between">
-      <div>Monitor StarShark @ 2022</div>
+      <div>StarSharks Monitor @ 2022</div>
       <div>v{{ $store.getters.appVersion }}</div>
     </div>
   </footer>
@@ -59,6 +59,11 @@ export default {
     this.$store.commit("initSA");
     document.body.classList.add("bg-dark");
   },
+  // watch: {
+  //   $route(to) {
+  //     document.title = `${to.meta.title} | StarSharks Monitor`;
+  //   },
+  // },
 };
 </script>
 <style>

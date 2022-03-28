@@ -26,12 +26,9 @@
                   type="number"
                   class="form-control"
                   id="countdown"
+                  min="1"
                   :value="timer"
-                  @change="
-                    (event) => {
-                      timer = event.target.value;
-                    }
-                  "
+                  @input="setTimer"
                 />
               </div>
               <div class="col">
@@ -52,9 +49,9 @@
             <button
               type="button"
               class="btn btn-primary"
-              @click="loadStarShark()"
+              @click="loadStarSharks()"
             >
-              Refresh StarShark
+              Refresh StarSharks
             </button>
           </div>
           <div
@@ -117,13 +114,13 @@ export default {
     this.timerEnable = localStorage.getItem("autoRefreshEnable");
     if (this.timerEnable === null) this.timerEnable = false;
     else this.timerEnable = this.timerEnable === "true";
-    this.StarShark.initSetLoadAlert(this.setLoadAlert);
-    this.loadStarShark();
+    this.StarSharks.initSetLoadAlert(this.setLoadAlert);
+    this.loadStarSharks();
     this.countdown = setInterval(() => {
       if (this.timerEnable) {
         this.currentTimer--;
         if (this.currentTimer == 0) {
-          this.loadStarShark();
+          this.loadStarSharks();
         }
       }
     }, 1000);
@@ -133,20 +130,13 @@ export default {
     clearTimeout(this.addAlert);
     clearInterval(this.countdown);
   },
-  watch: {
-    timer(data) {
-      localStorage.setItem("autoRefreshTimer", data);
-    },
-    timerEnable(data) {
-      localStorage.setItem("autoRefreshEnable", data);
-    },
-  },
   methods: {
-    loadStarShark() {
-      this.StarShark.getMultiAccSharks(this.$store.state.savedAddress).then(
+    loadStarSharks() {
+      this.StarSharks.getMultiAccSharks(this.$store.state.savedAddress).then(
         (accounts) => {
           this.savedAccounts = accounts;
-          if (this.savedAccounts > 0) this.setLoadAlert("Loaded StarShark");
+          if (this.savedAccounts.length > 0)
+            this.setLoadAlert("Loaded StarSharks");
           this.currentTimer = this.timer * 60;
         }
       );
@@ -158,11 +148,16 @@ export default {
       if (type == 1) {
         this.loadTimeout = setTimeout(() => {
           this.loadAlert = -1;
-        }, 5000);
+        }, 3000);
       }
+    },
+    setTimer(event) {
+      this.timer = event.target.value;
+      localStorage.setItem("autoRefreshTimer", this.timer || 10);
     },
     setTimerEnable(event) {
       this.timerEnable = event.target.checked;
+      localStorage.setItem("autoRefreshEnable", this.timerEnable);
     },
   },
 };

@@ -26,7 +26,7 @@
               <li>
                 Drag the button at below to bookmark bar.<br />
                 <a :href="link" class="btn btn-secondary"
-                  >Fetch Account From StarShark</a
+                  >Fetch Account From StarSharks</a
                 >
               </li>
               <li>
@@ -278,7 +278,7 @@ export default {
     addAddress() {
       let SA = this.$store.state.savedAddress;
       if (
-        this.StarShark.web3.utils.isAddress(this.address) &&
+        this.StarSharks.web3.utils.isAddress(this.address) &&
         SA.map((d) => d.address.toLowerCase()).indexOf(
           this.address.toLowerCase()
         ) === -1
@@ -291,7 +291,7 @@ export default {
         this.address = "";
         this.name = "";
       } else {
-        if (!this.StarShark.web3.utils.isAddress(this.address)) {
+        if (!this.StarSharks.web3.utils.isAddress(this.address)) {
           this.setAddAlert("Account format wrong", 0);
         } else if (
           SA.map((d) => d.address.toLowerCase()).indexOf(
@@ -339,7 +339,7 @@ export default {
       if (type == 1) {
         this.addTimeout = setTimeout(() => {
           this.addAlert = -1;
-        }, 5000);
+        }, 3000);
       }
     },
     loadImportFile(file) {
@@ -351,7 +351,7 @@ export default {
           let index = this.$store.state.savedAddress
             .map((d) => d.address.toLowerCase())
             .indexOf(key.toLowerCase());
-          let accData = await this.StarShark.getBaseAccData(
+          let accData = await this.StarSharks.getBaseAccData(
             data[key].authorization
           );
           accData = accData.data.data;

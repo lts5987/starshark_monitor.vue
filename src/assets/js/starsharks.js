@@ -1,9 +1,9 @@
-import { StarSharkBSC, StarSharkSea, StarSharkSss } from "@/assets/js/contract";
+import { StarSharksBSC, StarSharksSea, StarSharksSss } from "@/assets/js/contract";
 import { sleep } from "@/assets/js/function";
 import axios from "axios";
 import Web3 from "web3/dist/web3.min";
 
-export default class StarShark {
+export default class StarSharks {
   constructor() {
     this.setLoadAlert = () => {
       console.log('Not define yet')
@@ -12,19 +12,19 @@ export default class StarShark {
     this.sharkLink = 'https://starsharks.com/go/api/market/shark-detail?shark_id='
     this.web3 = new Web3("https://bsc-dataseed.binance.org/")
     this.contract = new this.web3.eth.Contract(
-      StarSharkBSC.abi, StarSharkBSC.address,
+      StarSharksBSC.abi, StarSharksBSC.address,
       (err) => {
         if (err) throw [new Date().toString(), 'contract starShark', err];
       }
     )
     this.contractSea = new this.web3.eth.Contract(
-      StarSharkSea.abi, StarSharkSea.address,
+      StarSharksSea.abi, StarSharksSea.address,
       (err) => {
         if (err) throw [new Date().toString(), 'contract starSharkSea', err];
       }
     )
     this.contractSss = new this.web3.eth.Contract(
-      StarSharkSss.abi, StarSharkSss.address,
+      StarSharksSss.abi, StarSharksSss.address,
       (err) => {
         if (err) throw [new Date().toString(), 'contract starSharkSss', err];
       }
@@ -112,14 +112,14 @@ export default class StarShark {
 
   //获取多个账号数据
   async getMultiAccSharks(savedAddress) {
-    let allAcc = {}
+    let allAcc = []
     for (const key in savedAddress) {
       this.setLoadAlert(`Getting account (${savedAddress[key].name}) sharkIDs`)
-      allAcc[savedAddress[key].address] = {
+      allAcc.push({
         accData: savedAddress[key],
         balanceData: await this.getAccountBalance(savedAddress[key]),
         sharkData: await this.getSharkDetail(savedAddress[key])
-      }
+      })
     }
     return allAcc
   }
