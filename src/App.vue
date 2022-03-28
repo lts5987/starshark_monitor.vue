@@ -1,5 +1,58 @@
 <template>
+<<<<<<< Updated upstream
   <router-view />
+=======
+  <nav class="navbar navbar-expand-lg navbar-dark bg-black" ref="navbar">
+    <div class="container-fluid">
+      <router-link :to="{ name: 'accounts' }" class="navbar-brand"
+        >Monitor StarShark</router-link
+      >
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <router-link
+              :to="{ name: 'accounts' }"
+              class="nav-link"
+              :class="{ active: $route.name == 'accounts' }"
+              >Accounts</router-link
+            >
+          </li>
+          <li class="nav-item">
+            <router-link
+              :to="{ name: 'monitor' }"
+              class="nav-link"
+              :class="{ active: $route.name == 'monitor' }"
+              >Monitor</router-link
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div
+    class="container-fluid pt-3 pb-3"
+    style="min-height: calc(100vh - 112px)"
+  >
+    <router-view />
+  </div>
+  <footer class="text-white bg-black">
+    <div class="container-fluid d-flex pt-3 pb-3 justify-content-between">
+      <div>Monitor StarShark @ 2022</div>
+      <div>v{{ $store.getters.appVersion }}</div>
+    </div>
+  </footer>
+>>>>>>> Stashed changes
 </template>
 
 <style>
@@ -56,12 +109,30 @@
     rgba(255, 255, 255, 0.15),
     rgba(255, 255, 255, 0)
   );
-  --bs-body-font-family: var(--bs-font-sans-serif);
+  --bs-body-font-family: var(--bs-font-monospace);
   --bs-body-font-size: 1rem;
   --bs-body-font-weight: 400;
   --bs-body-line-height: 1.5;
+<<<<<<< Updated upstream
   --bs-body-color: #fff;
   --bs-body-bg: rgb(54, 54, 54);
+=======
+  --bs-body-color: #212529;
+  --bs-body-bg: #fff;
+}
+body {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+}
+.bg-dark .card {
+  background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity));
+  border-color: var(--bs-white);
+  color: var(--bs-white);
+>>>>>>> Stashed changes
 }
 
 .card,
@@ -79,6 +150,7 @@
   display: inline-block;
   font-size: 0.8em;
 }
+<<<<<<< Updated upstream
 
 .spanremove {
   float: right;
@@ -86,5 +158,19 @@
   text-align: center;
   cursor: pointer;
   text-decoration: underline;
+=======
+.alert {
+  transition: height 0.3s, padding 0.3s, opacity 0.3s, margin 0.3s;
+}
+.alert.hide {
+  opacity: 0;
+  height: 0;
+  padding: 0;
+  margin-top: 0 !important;
+}
+.remove-border-bottom-for-card {
+  border-radius: 0.25rem;
+  border-bottom: 0;
+>>>>>>> Stashed changes
 }
 </style>
