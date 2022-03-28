@@ -1,14 +1,9 @@
 <template>
-  <div class="col-xl-3 col-lg-4 col-md-6">
-    <div class="card mt-3">
+  <div class="col">
+    <div class="card">
       <div class="card-header">
         <div>
-          {{ accData.name
-          }}<span
-            class="spanremove"
-            @click="$emit('remove-address', accData.address)"
-            >Remove</span
-          >
+          {{ accData.name }}
         </div>
         <span class="spanaddr">{{ accData.address }}</span>
       </div>
@@ -21,7 +16,7 @@
           >
             <div>
               <a
-                href="https://starsharks.com/market/sharks/{{shark.shark_id}}"
+                :href="'https://starsharks.com/market/sharks/' + shark.shark_id"
                 target="_blank"
                 >#{{ shark.shark_id }}</a
               >
@@ -49,7 +44,6 @@ export default {
     };
   },
   props: ["data"],
-  emits: ["remove-address"],
   mounted() {
     this.accData = this.data.accData;
     this.sharkData = this.data.sharkData;

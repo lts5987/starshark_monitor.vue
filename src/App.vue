@@ -1,7 +1,63 @@
 <template>
-  <router-view />
+  <nav class="navbar navbar-expand-lg navbar-dark bg-black" ref="navbar">
+    <div class="container-fluid">
+      <router-link :to="{ name: 'accounts' }" class="navbar-brand"
+        >Monitor StarShark</router-link
+      >
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <router-link
+              :to="{ name: 'accounts' }"
+              class="nav-link"
+              :class="{ active: $route.name == 'accounts' }"
+              >Accounts</router-link
+            >
+          </li>
+          <li class="nav-item">
+            <router-link
+              :to="{ name: 'monitor' }"
+              class="nav-link"
+              :class="{ active: $route.name == 'monitor' }"
+              >Monitor</router-link
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="container-fluid pt-3 pb-3">
+    <router-view />
+  </div>
+  <footer class="text-white bg-black">
+    <div class="container-fluid d-flex pt-3 pb-3 justify-content-between">
+      <div>Monitor StarShark @ 2022</div>
+      <div>v0.0.2</div>
+    </div>
+  </footer>
 </template>
-
+<script>
+export default {
+  data() {
+    return {};
+  },
+  mounted() {
+    this.$store.commit("initSA");
+    document.body.classList.add("bg-dark");
+  },
+};
+</script>
 <style>
 :root {
   --bs-blue: #0d6efd;
@@ -46,9 +102,9 @@
   --bs-black-rgb: 0, 0, 0;
   --bs-body-color-rgb: 33, 37, 41;
   --bs-body-bg-rgb: 255, 255, 255;
-  /* --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; */
-  --bs-font-sans-serif: SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", "Courier New", monospace;
+  --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas,
     "Liberation Mono", "Courier New", monospace;
   --bs-gradient: linear-gradient(
@@ -60,17 +116,23 @@
   --bs-body-font-size: 1rem;
   --bs-body-font-weight: 400;
   --bs-body-line-height: 1.5;
-  --bs-body-color: #fff;
-  --bs-body-bg: rgb(54, 54, 54);
+  --bs-body-color: #212529;
+  --bs-body-bg: #fff;
 }
-
-.card,
-.list-group-item {
-  background-color: var(--bs-body-bg);
-  border-color: var(--bs-body-color);
-  color: var(--bs-body-color);
+.bg-dark .card {
+  background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity));
+  border-color: var(--bs-white);
+  color: var(--bs-white);
 }
-
+.bg-dark .card .card-header {
+  background-color: var(--bs-dark);
+  border-color: var(--bs-white);
+}
+.bg-dark .list-group .list-group-item {
+  background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity));
+  color: var(--bs-white);
+  border-color: var(--bs-white);
+}
 .spanaddr {
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -79,12 +141,22 @@
   display: inline-block;
   font-size: 0.8em;
 }
-
-.spanremove {
-  float: right;
-  padding: 0 10px;
-  text-align: center;
-  cursor: pointer;
-  text-decoration: underline;
+.alert {
+  transition: height 0.3s, padding 0.3s, opacity 0.3s, margin 0.3s;
+}
+.alert.hide {
+  opacity: 0;
+  height: 0;
+  padding: 0;
+  margin-top: 0 !important;
+}
+[class*="col"] > .card {
+  height: 100%;
+}
+.card.hide-body {
+  height: auto;
+}
+.card.hide-body .card-body {
+  display: none;
 }
 </style>
