@@ -6,9 +6,6 @@ const version = JSON.parse(packageJson).version || '0.1.0'
 
 module.exports = defineConfig({
   publicPath: process.env.NODE_ENV === "production" ? "/starshark_monitor.vue/" : "/",
-<<<<<<< Updated upstream
-  transpileDependencies: true
-=======
   transpileDependencies: true,
   configureWebpack: {
     devtool: "source-map",
@@ -20,5 +17,4 @@ module.exports = defineConfig({
       })
     ]
   }
->>>>>>> Stashed changes
 })

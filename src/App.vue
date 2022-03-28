@@ -1,12 +1,9 @@
 <template>
-<<<<<<< Updated upstream
-  <router-view />
-=======
   <nav class="navbar navbar-expand-lg navbar-dark bg-black" ref="navbar">
     <div class="container-fluid">
-      <router-link :to="{ name: 'accounts' }" class="navbar-brand"
-        >Monitor StarShark</router-link
-      >
+      <router-link :to="{ name: 'accounts' }" class="navbar-brand">
+        Monitor StarShark
+      </router-link>
       <button
         class="navbar-toggler"
         type="button"
@@ -52,9 +49,18 @@
       <div>v{{ $store.getters.appVersion }}</div>
     </div>
   </footer>
->>>>>>> Stashed changes
 </template>
-
+<script>
+export default {
+  data() {
+    return {};
+  },
+  mounted() {
+    this.$store.commit("initSA");
+    document.body.classList.add("bg-dark");
+  },
+};
+</script>
 <style>
 :root {
   --bs-blue: #0d6efd;
@@ -99,9 +105,9 @@
   --bs-black-rgb: 0, 0, 0;
   --bs-body-color-rgb: 33, 37, 41;
   --bs-body-bg-rgb: 255, 255, 255;
-  /* --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; */
-  --bs-font-sans-serif: SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", "Courier New", monospace;
+  --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas,
     "Liberation Mono", "Courier New", monospace;
   --bs-gradient: linear-gradient(
@@ -113,10 +119,6 @@
   --bs-body-font-size: 1rem;
   --bs-body-font-weight: 400;
   --bs-body-line-height: 1.5;
-<<<<<<< Updated upstream
-  --bs-body-color: #fff;
-  --bs-body-bg: rgb(54, 54, 54);
-=======
   --bs-body-color: #212529;
   --bs-body-bg: #fff;
 }
@@ -132,16 +134,16 @@ body {
   background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity));
   border-color: var(--bs-white);
   color: var(--bs-white);
->>>>>>> Stashed changes
 }
-
-.card,
-.list-group-item {
-  background-color: var(--bs-body-bg);
-  border-color: var(--bs-body-color);
-  color: var(--bs-body-color);
+.bg-dark .card .card-header {
+  background-color: var(--bs-dark);
+  border-color: var(--bs-white);
 }
-
+.bg-dark .list-group .list-group-item {
+  background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity));
+  color: var(--bs-white);
+  border-color: var(--bs-white);
+}
 .spanaddr {
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -150,15 +152,6 @@ body {
   display: inline-block;
   font-size: 0.8em;
 }
-<<<<<<< Updated upstream
-
-.spanremove {
-  float: right;
-  padding: 0 10px;
-  text-align: center;
-  cursor: pointer;
-  text-decoration: underline;
-=======
 .alert {
   transition: height 0.3s, padding 0.3s, opacity 0.3s, margin 0.3s;
 }
@@ -171,6 +164,5 @@ body {
 .remove-border-bottom-for-card {
   border-radius: 0.25rem;
   border-bottom: 0;
->>>>>>> Stashed changes
 }
 </style>

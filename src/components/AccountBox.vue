@@ -1,23 +1,12 @@
 <template>
-<<<<<<< Updated upstream
-  <div class="col-xl-3 col-lg-4 col-md-6">
-    <div class="card mt-3">
-      <div class="card-header">
-=======
   <div class="col">
     <div class="card">
       <div
         class="card-header bg-white bg-opacity-10"
         @click="show[0] = !show[0]"
       >
->>>>>>> Stashed changes
         <div>
-          {{ accData.name
-          }}<span
-            class="spanremove"
-            @click="$emit('remove-address', accData.address)"
-            >Remove</span
-          >
+          {{ accData.name }}
         </div>
         <span class="spanaddr">
           <a
@@ -25,26 +14,7 @@
             target="_blank"
             >{{ accData.address }}</a
           >
-<<<<<<< Updated upstream
-            <div>
-              <a
-                href="https://starsharks.com/market/sharks/{{shark.shark_id}}"
-                target="_blank"
-                >#{{ shark.shark_id }}</a
-              >
-              - Star:&nbsp;{{ shark.star }}
-              <span
-                style="float: right"
-                :style="{ color: getPowerColor(shark.power, shark.star * 10) }"
-              >
-                {{ shark.power }}/{{ shark.star * 10 }}
-              </span>
-            </div>
-          </li>
-        </ul>
-=======
         </span>
->>>>>>> Stashed changes
       </div>
       <ul class="list-group list-group-flush">
         <li class="list-group-item" v-show="show[0]">
@@ -118,7 +88,6 @@ export default {
     };
   },
   props: ["data"],
-  emits: ["remove-address"],
   mounted() {
     this.accData = this.data.accData;
     this.balanceData = this.data.balanceData;
