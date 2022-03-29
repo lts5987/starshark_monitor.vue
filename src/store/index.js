@@ -1,4 +1,4 @@
-import jwtDecode from 'jwt-decode';
+import { JWTdecode } from '@/assets/js/function';
 import { createStore } from 'vuex';
 
 function updateSA(data) {
@@ -17,9 +17,7 @@ export default createStore({
     savedAddressDecode(state) {
       return state.savedAddress.map(d => {
         if (d.authorization != undefined) {
-          d.authorization_decode = jwtDecode(d.authorization)
-          d.qr_code_decode = jwtDecode(d.qr_code)
-          d.exp = Math.min(...[d.authorization_decode.exp, d.qr_code_decode.exp])
+          d = JWTdecode(d)
         }
         return d
       })

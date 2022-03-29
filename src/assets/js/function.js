@@ -1,3 +1,5 @@
+import jwtDecode from "jwt-decode";
+
 export function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -23,4 +25,11 @@ export function secConversion(sec) {
     return `${min}:${sec}`;
   }
   return sec
+}
+
+export function JWTdecode(d) {
+  d.authorization_decode = jwtDecode(d.authorization)
+  d.qr_code_decode = jwtDecode(d.qr_code)
+  d.exp = Math.min(...[d.authorization_decode.exp, d.qr_code_decode.exp])
+  return d
 }

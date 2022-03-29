@@ -140,13 +140,14 @@
           >
             <div class="account-header d-flex justify-content-between">
               <div class="account-name" v-show="editName[index]">
-                {{ sa.name }}
+                {{ index + 1 }}. {{ sa.name }}
                 <i
                   class="fa-solid fa-pen-to-square fa-fw"
                   @click="(editName[index] = false), focusEditName(index)"
                 ></i>
               </div>
               <div class="account-name-edit" v-show="!editName[index]">
+                {{ index + 1 }}.
                 <input
                   type="text"
                   :value="editNameText[index]"
@@ -221,6 +222,7 @@
 
 <script>
 import moment from "moment";
+import { JWTdecode } from "@/assets/js/function";
 export default {
   name: "AccountsView",
   data() {
@@ -351,27 +353,40 @@ export default {
           let index = this.$store.state.savedAddress
             .map((d) => d.address.toLowerCase())
             .indexOf(key.toLowerCase());
-          let accData = await this.StarSharks.getBaseAccData(
-            data[key].authorization
-          );
-          accData = accData.data.data;
-          if (index == -1) {
-            this.$store.commit("addSA", {
-              address: accData.account.toLowerCase(),
-              name: accData.name,
-              authorization: data[key].authorization,
-              qr_code: data[key].qr_code,
-            });
-          } else {
-            this.$store.commit("updateSA", {
-              index: index,
-              data: {
+          data[key] = JWTdecode(data[key]);
+          if (
+            data[key].authorization != undefined &&
+            data[key].exp * 1000 > Date.now()
+          ) {
+            let accData = await this.StarSharks.getBaseAccData(
+              data[key].authorization
+            );
+            accData = accData.data.data;
+            if (index == -1) {
+              this.$store.commit("addSA", {
                 address: accData.account.toLowerCase(),
                 name: accData.name,
                 authorization: data[key].authorization,
                 qr_code: data[key].qr_code,
-              },
-            });
+              });
+            } else {
+              this.$store.commit("updateSA", {
+                index: index,
+                data: {
+                  address: accData.account.toLowerCase(),
+                  name: accData.name,
+                  authorization: data[key].authorization,
+                  qr_code: data[key].qr_code,
+                },
+              });
+            }
+          } else {
+            if (index == -1) {
+              this.$store.commit("addSA", {
+                address: key,
+                name: "",
+              });
+            }
           }
         }
       });
