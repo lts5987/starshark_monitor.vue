@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import AccountsView from '../views/AccountsView.vue'
+import BalanceCheckerView from '../views/BalanceCheckerView.vue'
 import MonitorView from '../views/MonitorView.vue'
 
 const routes = [
@@ -17,6 +18,14 @@ const routes = [
     component: MonitorView,
     meta: {
       title: 'Monitor'
+    }
+  },
+  {
+    path: '/balancechecker',
+    name: 'balancechecker',
+    component: BalanceCheckerView,
+    meta: {
+      title: 'Balance Checker'
     }
   },
 ]

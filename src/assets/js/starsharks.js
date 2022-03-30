@@ -42,11 +42,16 @@ export default class StarSharks {
     return link
   }
 
+  //获取账号鲨鱼数量
+  async getSharkAmount(address) {
+    let amount = await this.contract.methods.balanceOf(address).call()
+    return parseInt(amount)
+  }
+
   //获取账号鲨鱼
   async getSharkIDs(address) {
-    let amount = await this.contract.methods.balanceOf(address).call(),
-      amount2done = 0
-    amount = parseInt(amount), amount2done = parseInt(amount)
+    const amount = await this.getSharkAmount(address)
+    let amount2done = amount
     let sharkIDs = []
     if (amount > 0) {
       for (let i = 0; i < amount; i++) {
@@ -110,7 +115,7 @@ export default class StarSharks {
     return mySharks
   }
 
-  //获取多个账号数据
+  //获取多个账号鲨鱼数据
   async getMultiAccSharks(savedAddress) {
     let allAcc = []
     for (const key in savedAddress) {
@@ -119,6 +124,19 @@ export default class StarSharks {
         accData: savedAddress[key],
         balanceData: await this.getAccountBalance(savedAddress[key]),
         sharkData: await this.getSharkDetail(savedAddress[key])
+      })
+    }
+    return allAcc
+  }
+
+  //获取多个账号数据
+  async getMultiAccs(savedAddress) {
+    let allAcc = []
+    for (const key in savedAddress) {
+      allAcc.push({
+        accData: savedAddress[key],
+        balanceData: await this.getAccountBalance(savedAddress[key]),
+        sharkAmount: await this.getSharkAmount(savedAddress[key].address)
       })
     }
     return allAcc

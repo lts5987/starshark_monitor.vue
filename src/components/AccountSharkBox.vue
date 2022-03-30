@@ -6,7 +6,7 @@
         @click="show[0] = !show[0]"
       >
         <div>
-          {{ accData.name }}
+          {{ accData.name || "&nbsp;" }}
         </div>
         <span class="spanaddr">
           <a
@@ -56,6 +56,11 @@
           v-for="shark in sharkData"
           :key="shark.shark_id"
           v-show="show[1]"
+          :class="{
+            SharkRent:
+              shark.sheet != null &&
+              (shark.sheet.auto_rent_out == 1 || shark.sheet.auto_rent_in == 1),
+          }"
         >
           <div>
             <a
@@ -92,6 +97,7 @@ export default {
     this.accData = this.data.accData;
     this.balanceData = this.data.balanceData;
     this.sharkData = this.data.sharkData;
+    console.log(this.sharkData);
   },
   methods: {
     getPowerColor(power, maxpower) {

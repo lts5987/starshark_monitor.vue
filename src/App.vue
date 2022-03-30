@@ -22,16 +22,27 @@
               :to="{ name: 'accounts' }"
               class="nav-link"
               :class="{ active: $route.name == 'accounts' }"
-              >Accounts</router-link
             >
+              Accounts
+            </router-link>
           </li>
           <li class="nav-item">
             <router-link
               :to="{ name: 'monitor' }"
               class="nav-link"
               :class="{ active: $route.name == 'monitor' }"
-              >Monitor</router-link
             >
+              Monitor
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link
+              :to="{ name: 'balancechecker' }"
+              class="nav-link"
+              :class="{ active: $route.name == 'balancechecker' }"
+            >
+              Balance Checker
+            </router-link>
           </li>
         </ul>
       </div>
@@ -164,10 +175,25 @@ body {
   opacity: 0;
   height: 0;
   padding: 0;
-  margin-top: 0 !important;
+  margin: 0 !important;
 }
 .remove-border-bottom-for-card {
   border-radius: 0.25rem;
   border-bottom: 0;
+}
+.card > .table {
+  border-radius: 0.25rem;
+  margin: 0;
+  overflow: hidden;
+}
+.CodeMirror,
+.CodeMirror pre.CodeMirror-line {
+  font-family: var(--bs-font-monospace) !important;
+}
+.SharkRent {
+  background-image: url("assets/rented.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
 }
 </style>

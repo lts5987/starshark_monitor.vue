@@ -49,9 +49,9 @@
             <button
               type="button"
               class="btn btn-primary"
-              @click="loadStarSharks()"
+              @click="loadAccounts()"
             >
-              Refresh StarSharks
+              Refresh Accounts
             </button>
           </div>
           <div
@@ -68,28 +68,88 @@
         </div>
       </div>
     </div>
-  </div>
-  <div
-    id="starsharklist"
-    class="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-3 pt-3"
-  >
-    <AccountSharkBox
-      v-for="account in savedAccounts"
-      :key="account.accData.address"
-      :data="account"
-    ></AccountSharkBox>
+    <div class="col">
+      <div class="card">
+        <table class="table table-dark table-hover table-striped">
+          <thead>
+            <th scope="col" class="text-center">#</th>
+            <th scope="col" class="text-center">Name</th>
+            <th scope="col" class="text-center">Address</th>
+            <th scope="col" class="text-center">BNB</th>
+            <th scope="col" class="text-center">SEA</th>
+            <th scope="col" class="text-center">SEA In Game</th>
+            <th scope="col" class="text-center">SSS</th>
+            <th scope="col" class="text-center">SNFT</th>
+          </thead>
+          <tbody>
+            <tr
+              v-for="(account, i) in savedAccounts"
+              :key="account.accData.address"
+            >
+              <th scope="row">{{ i }}.</th>
+              <td>
+                {{ account.accData.name }}
+              </td>
+              <td>
+                <a
+                  :href="`https://bscscan.com/address/${account.accData.address}`"
+                  target="_blank"
+                >
+                  {{ account.accData.address }}
+                </a>
+              </td>
+              <td
+                class="text-end"
+                :class="{
+                  'text-info': account.balanceData.BNB != '0.00000000 BNB',
+                }"
+              >
+                {{ account.balanceData.BNB }}
+              </td>
+              <td
+                class="text-end"
+                :class="{
+                  'text-info': account.balanceData.SEA != '0.00000000 SEA',
+                }"
+              >
+                {{ account.balanceData.SEA }}
+              </td>
+              <td
+                class="text-end"
+                :class="{
+                  'text-info':
+                    account.balanceData.SeaInGame != '0.00 SEA' &&
+                    account.balanceData.SeaInGame != '--',
+                }"
+              >
+                {{ account.balanceData.SeaInGame }}
+              </td>
+              <td
+                class="text-end"
+                :class="{
+                  'text-info': account.balanceData.SSS != '0.00000000 SSS',
+                }"
+              >
+                {{ account.balanceData.SSS }}
+              </td>
+              <td
+                class="text-end"
+                :class="{ 'text-info': account.sharkAmount > 0 }"
+              >
+                {{ account.sharkAmount }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import AccountSharkBox from "@/components/AccountSharkBox.vue";
 import { secConversion } from "@/assets/js/function";
-
 export default {
-  name: "MonitorView",
-  components: {
-    AccountSharkBox,
-  },
+  name: "BalanceCheckerView",
   data() {
     return {
       loadAlert: -1,
@@ -109,18 +169,18 @@ export default {
     },
   },
   mounted() {
-    this.timer = parseInt(localStorage.getItem("autoRefreshTimer")) || 10;
+    this.timer = parseInt(localStorage.getItem("autoRefreshTimer2")) || 10;
     this.currentTimer = this.timer * 60;
-    this.timerEnable = localStorage.getItem("autoRefreshEnable");
+    this.timerEnable = localStorage.getItem("autoRefreshEnable2");
     if (this.timerEnable === null) this.timerEnable = false;
     else this.timerEnable = this.timerEnable === "true";
     this.StarSharks.initSetLoadAlert(this.setLoadAlert);
-    this.loadStarSharks();
+    this.loadAccounts();
     this.countdown = setInterval(() => {
       if (this.timerEnable) {
         this.currentTimer--;
         if (this.currentTimer == 0) {
-          this.loadStarSharks();
+          this.loadAccounts();
         }
       }
     }, 1000);
@@ -130,12 +190,12 @@ export default {
     clearInterval(this.countdown);
   },
   methods: {
-    loadStarSharks() {
-      this.StarSharks.getMultiAccSharks(this.$store.state.savedAddress).then(
+    loadAccounts() {
+      this.StarSharks.getMultiAccs(this.$store.state.savedAddress).then(
         (accounts) => {
           this.savedAccounts = accounts;
           if (this.savedAccounts.length > 0)
-            this.setLoadAlert("Loaded StarSharks");
+            this.setLoadAlert("Loaded Accounts");
           this.currentTimer = this.timer * 60;
         }
       );
@@ -152,12 +212,17 @@ export default {
     },
     setTimer(event) {
       this.timer = event.target.value;
-      localStorage.setItem("autoRefreshTimer", this.timer || 10);
+      localStorage.setItem("autoRefreshTimer2", this.timer || 10);
     },
     setTimerEnable(event) {
       this.timerEnable = event.target.checked;
-      localStorage.setItem("autoRefreshEnable", this.timerEnable);
+      localStorage.setItem("autoRefreshEnable2", this.timerEnable);
     },
   },
 };
 </script>
+<style scoped>
+textarea {
+  width: 100%;
+}
+</style>

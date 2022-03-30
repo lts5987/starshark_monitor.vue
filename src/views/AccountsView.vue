@@ -13,13 +13,35 @@
           <li class="list-group-item" v-if="showcardbody[0]">
             Token is use for the api to get SEA In Game
             <br />
-            <span class="text-danger">* not sure will get baned or not</span>
+            <span class="text-danger"
+              >* not sure will get baned or not (use at your own risk)</span
+            >
           </li>
           <li
             class="list-group-item bg-white bg-opacity-10"
             v-if="showcardbody[0]"
           >
-            Tutorial to get the file to import accounts (Method 2)
+            Method 2 Example - The format of text to input
+          </li>
+          <li
+            class="list-group-item"
+            v-if="showcardbody[0]"
+            title="Double Click To Copy"
+            @dblclick="
+              copyTextToClipboard(
+                'NTF 0x416f1D70c1C22608814d9f36c492EfB3Ba8cad4c\nSEA 0x26193C7fa4354AE49eC53eA2cEBC513dc39A10aa\nSSS 0xC3028FbC1742a16A5D69dE1B334cbce28f5d7EB3'
+              )
+            "
+          >
+            NTF 0x416f1D70c1C22608814d9f36c492EfB3Ba8cad4c<br />
+            SEA 0x26193C7fa4354AE49eC53eA2cEBC513dc39A10aa<br />
+            SSS 0xC3028FbC1742a16A5D69dE1B334cbce28f5d7EB3
+          </li>
+          <li
+            class="list-group-item bg-white bg-opacity-10"
+            v-if="showcardbody[0]"
+          >
+            Method 3 Tutorial - How to get the file to import accounts
           </li>
           <li class="list-group-item" v-if="showcardbody[0]">
             <ul style="list-style-type: decimal">
@@ -46,49 +68,102 @@
         <div
           class="card-header bg-white bg-opacity-10"
           @click="showcardbody[1] = !showcardbody[1]"
-          :class="{ 'remove-border-bottom-for-card': !showcardbody[1] }"
         >
           Method 1 - Add Address (no token)<br />
           <span class="text-danger"
             >* cant get game sea amount with this method</span
           >
         </div>
-        <div class="card-body" v-show="showcardbody[1]">
-          <div class="mb-3">
-            <label for="address" class="form-label">Account Address</label>
-            <input
-              type="text"
-              class="form-control"
-              :value="address"
-              @input="(event) => (address = event.target.value)"
-            />
-          </div>
-          <div class="mb-3">
-            <label for="name" class="form-label">Account Name</label>
-            <input
-              type="text"
-              class="form-control"
-              :value="name"
-              @input="(event) => (name = event.target.value)"
-            />
-          </div>
-          <div class="d-grid gap-2\">
-            <button type="button" class="btn btn-primary" @click="addAddress()">
-              Add Address
-            </button>
-          </div>
-          <div
-            class="alert mb-0 mt-3"
-            role="alert"
-            :class="{
-              hide: addAlert == -1,
-              'alert-warning': addAlert == 0,
-              'alert-success': addAlert == 1,
-            }"
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item" v-show="showcardbody[1]">
+            <div class="mb-3">
+              <label for="address" class="form-label">Account Address</label>
+              <input
+                type="text"
+                class="form-control"
+                :value="address"
+                @input="(event) => (address = event.target.value)"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="name" class="form-label">Account Name</label>
+              <input
+                type="text"
+                class="form-control"
+                :value="name"
+                @input="(event) => (name = event.target.value)"
+              />
+            </div>
+            <div class="d-grid gap-2">
+              <button
+                type="button"
+                class="btn btn-primary"
+                @click="addAddress()"
+              >
+                Add Address
+              </button>
+            </div>
+            <div
+              class="alert mb-0 mt-3"
+              role="alert"
+              :class="{
+                hide: addAlert == -1,
+                'alert-warning': addAlert == 0,
+                'alert-success': addAlert == 1,
+              }"
+            >
+              {{ addAlertText }}
+            </div>
+          </li>
+          <li
+            class="list-group-item bg-white bg-opacity-10"
+            @click="showcardbody[4] = !showcardbody[4]"
+            :class="{ 'remove-border-bottom-for-card': !showcardbody[4] }"
           >
-            {{ addAlertText }}
-          </div>
-        </div>
+            Method 2 - Import Multiple Address With Text (no token)
+          </li>
+          <li class="list-group-item" v-show="showcardbody[4]">
+            <div class="mb-3">
+              <label for="textarea-address" class="form-label">Address</label>
+              <Codemirror
+                v-model="cmAddress"
+                height="200"
+                :options="cmOptions"
+                @change="cmAddressChange"
+                name="test"
+              />
+            </div>
+            <div
+              class="alert mb-3 mt-3"
+              role="alert"
+              :class="{
+                hide: addAlert2Info == -1,
+                'alert-info': addAlert2Info == 0,
+              }"
+              v-html="addAlertText2Info"
+            ></div>
+            <div class="d-grid gap-2">
+              <button
+                type="button"
+                class="btn btn-primary"
+                @click="addAddress2()"
+              >
+                Add Address
+              </button>
+            </div>
+            <div
+              class="alert mb-0 mt-3"
+              role="alert"
+              :class="{
+                hide: addAlert2 == -1,
+                'alert-warning': addAlert2 == 0,
+                'alert-success': addAlert2 == 1,
+              }"
+            >
+              {{ addAlertText2 }}
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
     <div class="col order-md-3">
@@ -98,7 +173,7 @@
           @click="showcardbody[2] = !showcardbody[2]"
           :class="{ 'remove-border-bottom-for-card': !showcardbody[2] }"
         >
-          Method 2 - Import Address (has token)
+          Method 3 - Import Address (has token)
         </div>
         <div class="card-body" v-show="showcardbody[2]">
           <div
@@ -222,9 +297,14 @@
 
 <script>
 import moment from "moment";
-import { JWTdecode } from "@/assets/js/function";
+import { copyTextToClipboard, JWTdecode } from "@/assets/js/function";
+import Codemirror from "codemirror-editor-vue3";
+
 export default {
   name: "AccountsView",
+  components: {
+    Codemirror,
+  },
   data() {
     return {
       address: "",
@@ -232,11 +312,22 @@ export default {
       addAlert: -1,
       addAlertText: "",
       addTimeout: null,
+      addAlert2: -1,
+      addAlertText2: "",
+      addTimeout2: null,
+      addAlert2Info: -1,
+      addAlertText2Info: "",
       file: "",
       link: 'javascript:(t=>{var e=document.createElement("a");e.setAttribute("href","data:text/json;charset=utf-8,"+encodeURIComponent(t)),e.setAttribute("download","starshark_monitor_import_data"),e.style.display="none",document.body.appendChild(e),e.click(),document.body.removeChild(e)})(localStorage.SESSIONS);',
-      showcardbody: [true, true, true, true],
+      showcardbody: [true, true, true, true, true],
       editName: [],
       editNameText: [],
+      cmOptions: {
+        lineNumbers: true,
+        smartIndent: false,
+      },
+      cmAddress: "",
+      cmWidgets: [],
     };
   },
   computed: {
@@ -253,6 +344,70 @@ export default {
     },
   },
   methods: {
+    copyTextToClipboard(text) {
+      copyTextToClipboard(text);
+    },
+    checkCmAddress(address) {
+      let tmpRow = address.split("\n");
+      let row = [],
+        errors = [];
+      for (const i in tmpRow) {
+        let tmp = tmpRow[i].trim().replaceAll("\t", " ").split(" ");
+        let address,
+          name = "",
+          hasAddress = false;
+        while (tmp.length > 0) {
+          address = tmp.pop().toLowerCase();
+          if (this.StarSharks.web3.utils.isAddress(address)) {
+            hasAddress = true;
+            break;
+          }
+        }
+        if (hasAddress) {
+          name = tmp.filter((d) => d !== "").join(" ");
+          row.push([name, address]);
+        } else {
+          errors.push(i);
+        }
+      }
+      return {
+        data: row,
+        errors: tmpRow.length == 1 && tmpRow[0] == "" ? [] : errors,
+      };
+    },
+    cmAddressChange(value, editor) {
+      this.cmAddress = value;
+      let data = this.checkCmAddress(this.cmAddress);
+      editor.operation(() => {
+        for (var i = 0; i < this.cmWidgets.length; ++i)
+          editor.removeLineWidget(this.cmWidgets[i]);
+        this.cmWidgets = [];
+
+        for (const i of data.errors) {
+          var msg = document.createElement("div");
+          var icon = msg.appendChild(document.createElement("span"));
+          icon.innerHTML = "!!";
+          icon.className = "lint-error-icon";
+          msg.appendChild(document.createTextNode("No Address Detected."));
+          msg.className = "lint-error text-danger";
+          this.cmWidgets.push(
+            editor.addLineWidget(parseInt(i), msg, {
+              coverGutter: false,
+              noHScroll: true,
+            })
+          );
+        }
+      });
+      let text = [];
+      if (data.data.length > 0) {
+        text.push(`Total ${data.data.length} address to add.`);
+      }
+      if (data.errors.length > 0) {
+        text.push(`There is ${data.data.length} line can't be read.`);
+      }
+      text = text.join("<br>");
+      this.setAddAlert2Info(text, text !== "" ? 0 : -1);
+    },
     focusEditName(index) {
       setTimeout(() => {
         this.$refs.editName[index].focus();
@@ -304,6 +459,28 @@ export default {
         }
       }
     },
+    addAddress2() {
+      let SA = this.$store.state.savedAddress;
+      let addrs = this.checkCmAddress(this.cmAddress).data;
+      let rst = { d: 0, e: 0 };
+      for (const addr of addrs) {
+        if (SA.map((d) => d.address.toLowerCase()).indexOf(addr[1]) === -1) {
+          this.$store.commit("addSA", {
+            address: addr[1],
+            name: addr[0],
+          });
+          rst.d++;
+        } else {
+          rst.e++;
+        }
+      }
+      let text = [];
+      if (rst.d > 0) text.push(`${rst.d} accounts added successfully.`);
+      if (rst.e > 0) text.push(`${rst.e} account already exists.`);
+      text = text.join("<br>");
+      if (text !== "") this.setAddAlert2(text);
+      else this.setAddAlert2("There is no account to add.", 0);
+    },
     removeAddress(address, name) {
       if (
         confirm(
@@ -343,6 +520,20 @@ export default {
           this.addAlert = -1;
         }, 3000);
       }
+    },
+    setAddAlert2(text, type = 1) {
+      clearTimeout(this.addTimeout2);
+      this.addAlertText2 = text;
+      this.addAlert2 = type;
+      if (type == 1) {
+        this.addTimeout2 = setTimeout(() => {
+          this.addAlert2 = -1;
+        }, 3000);
+      }
+    },
+    setAddAlert2Info(text, type = 0) {
+      this.addAlertText2Info = text;
+      this.addAlert2Info = type;
     },
     loadImportFile(file) {
       const reader = new FileReader();
