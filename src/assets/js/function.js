@@ -30,6 +30,8 @@ export function secConversion(sec) {
 export function JWTdecode(d) {
   d.authorization_decode = jwtDecode(d.authorization)
   d.qr_code_decode = jwtDecode(d.qr_code)
+  d.address = d.authorization_decode.jti
+  d.name = ''
   d.exp = Math.min(...[d.authorization_decode.exp, d.qr_code_decode.exp])
   return d
 }
