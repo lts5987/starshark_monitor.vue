@@ -88,10 +88,10 @@ export default class StarSharks {
       amountSeaInGame = d.amount
     }
     return {
-      BNB: `${amountBNB} BNB`,
-      SEA: `${amountSea} SEA`,
-      SSS: `${amountSss} SSS`,
-      SeaInGame: amountSeaInGame === null ? '--' : `${amountSeaInGame} SEA`
+      BNB: `${amountBNB}`,
+      SEA: `${amountSea}`,
+      SSS: `${amountSss}`,
+      SeaInGame: amountSeaInGame === null ? '--' : `${amountSeaInGame}`
     }
   }
 

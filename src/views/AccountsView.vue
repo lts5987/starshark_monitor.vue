@@ -318,7 +318,7 @@ export default {
       addAlert2Info: -1,
       addAlertText2Info: "",
       file: "",
-      link: 'javascript:(t=>{var e=document.createElement("a");e.setAttribute("href","data:text/json;charset=utf-8,"+encodeURIComponent(t)),e.setAttribute("download","starshark_monitor_import_data"),e.style.display="none",document.body.appendChild(e),e.click(),document.body.removeChild(e)})(localStorage.SESSIONS);',
+      link: 'javascript: (e => { if ("https://starsharks.com" !== window.location.origin) alert("Only can be use at StarSharks official website."); else if (null == e) alert("There is no data in website."); else { var t = document.createElement("a"); t.setAttribute("href", "data:text/json;charset=utf-8," + encodeURIComponent(e)), t.setAttribute("download", "starshark_monitor_import_data"), t.style.display = "none", document.body.appendChild(t), t.click(), document.body.removeChild(t) } })(localStorage.SESSIONS);',
       showcardbody: [true, true, true, true, true],
       editName: [],
       editNameText: [],
