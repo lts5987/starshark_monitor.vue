@@ -101,7 +101,7 @@
               <td
                 class="text-end"
                 :class="{
-                  'text-info': account.balanceData.BNB != '0.00000000 BNB',
+                  'text-info': account.balanceData.BNB != '0.00000000',
                 }"
               >
                 {{ account.balanceData.BNB }}
@@ -109,7 +109,7 @@
               <td
                 class="text-end"
                 :class="{
-                  'text-info': account.balanceData.SEA != '0.00000000 SEA',
+                  'text-info': account.balanceData.SEA != '0.00000000',
                 }"
               >
                 {{ account.balanceData.SEA }}
@@ -118,7 +118,7 @@
                 class="text-end"
                 :class="{
                   'text-info':
-                    account.balanceData.SeaInGame != '0.00 SEA' &&
+                    account.balanceData.SeaInGame != '0.00' &&
                     account.balanceData.SeaInGame != '--',
                 }"
               >
@@ -127,7 +127,7 @@
               <td
                 class="text-end"
                 :class="{
-                  'text-info': account.balanceData.SSS != '0.00000000 SSS',
+                  'text-info': account.balanceData.SSS != '0.00000000',
                 }"
               >
                 {{ account.balanceData.SSS }}
