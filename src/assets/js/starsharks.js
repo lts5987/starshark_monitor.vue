@@ -82,11 +82,13 @@ export default class StarSharks {
     let amountSss = await this.contractSss.methods.balanceOf(address).call()
     amountSss = parseFloat(this.web3.utils.fromWei(amountSss)).toFixed(8)
     let amountSeaInGame = null
-    // if (data.authorization != undefined && data.exp * 1000 > Date.now()) {
-    //   let d = await this.getBaseAccData(data.authorization)
-    //   d = d.data.data
-    //   amountSeaInGame = d.amount
-    // }
+    if (localStorage.getItem("allowBaseApi") == "true") {
+      if (data.authorization != undefined && data.exp * 1000 > Date.now()) {
+        let d = await this.getBaseAccData(data.authorization)
+        d = d.data.data
+        amountSeaInGame = d.amount
+      }
+    }
     return {
       BNB: `${amountBNB}`,
       SEA: `${amountSea}`,

@@ -138,7 +138,7 @@ export default {
   --bs-body-color: #212529;
   --bs-body-bg: #fff;
 }
-body {
+body.select-none {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
   -khtml-user-select: none; /* Konqueror HTML */

@@ -9,6 +9,8 @@ import StarSharks from "./assets/js/starsharks"
 import router from './router'
 import store from './store'
 
+let check = localStorage.getItem('allowBaseApi')
+if (check == undefined) localStorage.setItem('allowBaseApi', true)
 
 let app = createApp(App)
 app.use(store)

@@ -549,31 +549,48 @@ export default {
             data[key].authorization != undefined &&
             data[key].exp * 1000 > Date.now()
           ) {
-            // let accData = await this.StarSharks.getBaseAccData(
-            //   data[key].authorization
-            // );
-            // accData = accData.data.data;
-            if (index == -1) {
-              this.$store.commit("addSA", {
-                // address: accData.account.toLowerCase(),
-                // name: accData.name,
-                address: data[key].address.toLowerCase(),
-                name: data[key].name,
-                authorization: data[key].authorization,
-                qr_code: data[key].qr_code,
-              });
+            if (localStorage.getItem("allowBaseApi") == "true") {
+              let accData = await this.StarSharks.getBaseAccData(
+                data[key].authorization
+              );
+              accData = accData.data.data;
+              if (index == -1) {
+                this.$store.commit("addSA", {
+                  address: accData.account.toLowerCase(),
+                  name: accData.name,
+                  authorization: data[key].authorization,
+                  qr_code: data[key].qr_code,
+                });
+              } else {
+                this.$store.commit("updateSA", {
+                  index: index,
+                  data: {
+                    address: accData.account.toLowerCase(),
+                    name: accData.name,
+                    authorization: data[key].authorization,
+                    qr_code: data[key].qr_code,
+                  },
+                });
+              }
             } else {
-              this.$store.commit("updateSA", {
-                index: index,
-                data: {
-                  // address: accData.account.toLowerCase(),
-                  // name: accData.name,
+              if (index == -1) {
+                this.$store.commit("addSA", {
                   address: data[key].address.toLowerCase(),
                   name: data[key].name,
                   authorization: data[key].authorization,
                   qr_code: data[key].qr_code,
-                },
-              });
+                });
+              } else {
+                this.$store.commit("updateSA", {
+                  index: index,
+                  data: {
+                    address: data[key].address.toLowerCase(),
+                    name: data[key].name,
+                    authorization: data[key].authorization,
+                    qr_code: data[key].qr_code,
+                  },
+                });
+              }
             }
           } else {
             if (index == -1) {
